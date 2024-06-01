@@ -1,0 +1,1314 @@
+body {
+    background-color: #ece4cb;
+    color: #f4a261; /* Soft ember orange */
+    font-family: 'Arial'; /* Defaulting to Arial for body text */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Corsiva', bold; 
+    color: #f4a261; /* A brighter shade of orange for headings */
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #222; /* Dark mode background */
+}
+
+#loadButton {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    padding: 5px 10px; /* Padding */
+    border: none; /* No border */
+    border-radius: 8px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Font size */
+}
+
+#loadButton:hover {
+    background-color: #45a049; /* Darker green background on hover */
+}
+
+#saveButton {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    padding: 5px 10px; /* Padding */
+    border: none; /* No border */
+    border-radius: 8px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Font size */
+}
+
+#saveButton:hover {
+    background-color: #45a049; /* Darker green background on hover */
+}
+
+.character-image-section {
+    flex: 1;
+    max-width: 60%;
+    margin-right: 10px;
+    border: 3px solid #555;
+    border-radius: 8px;
+}
+
+.character-details {
+    flex: 2;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Creates two columns */
+    gap: 10px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-control {
+    padding: 4px;
+    margin-top: 4px;
+    border-radius: 8px;
+    background-color: #333;
+    color: #f96; /* Ember-like color for input text */
+    border: 1px solid #555;
+    font-weight: bold; /* Makes the text bold */
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #f96;
+}
+
+label {
+    color: #f96;
+    font-family: 'Corsiva', bold;
+}
+
+
+input[type="text"], input[type="number"], select, textarea {
+    background-color: #222;
+    color: #f96;
+    border: 2px solid #f4a261;
+    border-radius: 8px;
+    padding: 8px;
+    width: calc(100% - 18px); /* accounting for padding and border */
+    font-weight: bold; /* Makes the text bold */
+}
+
+input[type="file"] {
+    background-color: #383838;
+    border: none;
+    color: #f4a261;
+    font-weight: bold; /* Makes the text bold */
+}
+
+button {
+    padding: 5px 10px;
+    background-color: #404040;
+    color: #222;
+    border-radius: 8px; /* Rounded corners for the button */
+    cursor: pointer;
+    border: none;
+}
+
+button:hover {
+    background-color: #e76f51;
+}
+
+.attribute-section {
+    margin-top: 5px;
+    border: 2px solid gray;
+    border-radius: 8px;
+    padding: 5px;
+    background-color: #222;
+    display: flex; /* Use flexbox for horizontal layout */
+    justify-content: space-between; /* Spaces out main and secondary attributes */
+    align-items: flex-start; /* Aligns items at the start of the container */
+    gap: 10px; /* Adds space between the two attribute groups */
+    max-width: 100%; /* Ensures it doesn't go offscreen */
+    margin: 0 auto; /* Centers the section */
+}
+
+.main-attributes, .secondary-attributes {
+    display: flex;
+    flex-wrap: wrap; /* Allows attributes to wrap onto the next line if space runs out */
+    justify-content: space-around; /* Distributes spacing evenly */
+    gap: 10px; /* Space between each attribute */
+}
+
+.attribute {
+    flex: 1 1 10%; /* Each attribute can grow and shrink but bases at 20% of the container width */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-weight: bold;
+    border-radius: 8px;
+    border: 4px solid;
+    padding: 4px;
+    background-color: #282828; /* Slightly lighter than section background */
+}
+
+.attribute label {
+    background-color: #222; /* Light grey for readability */
+    padding: 3px;
+    border-radius: 4px;
+    width: 98%; /* Full width within the attribute container */
+    font-weight: bold;
+}
+
+.attribute input[type="number"] h2 {
+    width: 98%; /* Full width to match label */
+    padding: 1px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.attribute#VIT, .attribute#HP, .attribute#MAXHP {
+    position: relative; /* Needed for pseudo-elements positioning */
+    border: 4px solid;
+    border-color: #6acf6a;  /* Base green color */
+    padding: 4px;
+    background: linear-gradient(135deg, #6acf6a 30%, #4c8c4a 70%); /* Adjusted for light source from top-right */
+}
+
+/* Additional style to apply different border colors for the top/right and bottom/left */
+.attribute#VIT, .attribute#HP, .attribute#MAXHP {
+    border-top-color: #6acf6a; /* Lighter green for top */
+    border-right-color: #6acf6a; /* Lighter green for right */
+    border-bottom-color: #4c8c4a; /* Darker green for bottom */
+    border-left-color: #4c8c4a; /* Darker green for left */
+}
+
+.attribute#VIT::before, .attribute#HP::before, .attribute#MAXHP::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    border-radius: 8px;
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 50%);
+    pointer-events: none;
+}
+
+.attribute#VIT::after, .attribute#HP::after, .attribute#MAXHP::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+}
+
+
+.attribute#FIT, .attribute#STA, .attribute#STAM, .attribute#MOV {
+    position: relative;
+    border: 4px solid;
+    padding: 4px;
+    background: linear-gradient(135deg, #fad764 30%, #e6c04d 70%);
+}
+
+/* Additional style to apply different border colors for the top/right and bottom/left for Stamina Section */
+.attribute#FIT, .attribute#STA, .attribute#STAM, .attribute#MOV {
+    border-top-color: #fad764; /* Lighter topaz for top */
+    border-right-color: #fad764; /* Lighter topaz for right */
+    border-bottom-color: #e6c04d; /* Darker topaz for bottom */
+    border-left-color: #e6c04d; /* Darker topaz for left */
+}
+
+
+.attribute#FIT::before, .attribute#STA::before, .attribute#STAM::before, .attribute#MOV::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    border-radius: 8px;
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 50%);
+    pointer-events: none;
+}
+
+.attribute#FIT::after, .attribute#STA::after, .attribute#STAM::after, .attribute#MOV::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+}
+
+
+
+.attribute#THM, .attribute#EPR, .attribute#CEPR {
+    position: relative;
+    border: 4px solid;
+    padding: 4px;
+    background: linear-gradient(135deg, #971d97 30%, #7e0f7e 70%);
+}
+
+/* Additional style to apply different border colors for the top/right and bottom/left for THM Section */
+.attribute#THM, .attribute#EPR, .attribute#CEPR {
+    border-top-color: #971d97; /* Lighter purple for top */
+    border-right-color: #971d97; /* Lighter purple for right */
+    border-bottom-color: #7e0f7e; /* Darker purple for bottom */
+    border-left-color: #7e0f7e; /* Darker purple for left */
+}
+
+.attribute#THM::before, .attribute#EPR::before, .attribute#CEPR::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    border-radius: 8px;
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 50%);
+    pointer-events: none;
+}
+
+.attribute#THM::after, .attribute#EPR::after, .attribute#CEPR::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+}
+
+.attribute#DEF, .attribute#MDEF {
+    position: relative; /* Necessary for absolute positioning of pseudo-elements */
+    border: 4px solid;
+    padding: 4px;
+    background: linear-gradient(135deg, #777 30%, #555 70%); /* Gradient background for depth */
+}
+
+/* Pseudo-elements for shine effect */
+.attribute#DEF::before, .attribute#MDEF::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    border-radius: 8px;
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 50%);
+    pointer-events: none; /* Allows click events to pass through */
+}
+
+.attribute#DEF::after, .attribute#MDEF::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3); /* Adds depth with a subtle inner shadow */
+    pointer-events: none;
+}
+
+/* Additional style to apply different border colors for the top/right and bottom/left for Defense Section */
+.attribute#DEF, .attribute#MDEF {
+    border-top-color: #777; /* Lighter grey for top */
+    border-right-color: #777; /* Lighter grey for right */
+    border-bottom-color: #555; /* Darker grey for bottom */
+    border-left-color: #555; /* Darker grey for left */
+}
+
+.attribute#FIL {
+    border-color: #222; /* Pale grey */
+}
+
+#FIL label,
+#FIL input {
+    visibility: hidden;
+}
+
+.combat-attribute-section {
+    margin-top: 5px;
+    border: 2px solid gray;
+    border-radius: 8px;
+    padding: 5px;
+    background-color: #222;
+    display: flex; /* Use flexbox for horizontal layout */
+    justify-content: space-between; /* Spaces out main and secondary attributes */
+    align-items: flex-start; /* Aligns items at the start of the container */
+    gap: 10px; /* Adds space between the two attribute groups */
+    max-width: 100%; /* Ensures it doesn't go offscreen */
+    margin: 0 auto; /* Centers the section */
+}
+
+.traits-container {
+    margin-top: 5px;
+    border: 2px solid gray;
+    display: flex;
+    border-radius: 8px;
+    background-color: #222; /* Dark mode background */
+    justify-content: center; /* Align sections to the center of the container */
+    padding: 20px; /* Increased padding for better spacing around the container */
+    gap: 20px; /* Add a gap between the sections */
+}
+
+.traits-section {
+    border: 2px solid gray;
+    padding: 5px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column; /* Stack the headings and traits vertically */
+    align-items: center; /* Center-align the items */
+    width: 48%; /* Adjust width to contain traits more neatly */
+}
+
+.traits-section h3 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-family: 'Corsiva';
+    color: #f96; /* Optional: change the color of headers */
+}
+
+.traits {
+    display: flex;
+    width: 100%; /* Ensures the trait row takes full width of its section */
+    align-items: center;
+    margin-bottom: 5px; /* Reduced margin-bottom for compactness */
+}
+
+.traits select {
+    flex-grow: 1; /* Allow select to fill available space */
+    padding: 5px;
+    margin-right: 5px; /* Space between the select and the button */
+    border-radius: 8px;
+    border: 1px solid #FFA500; /* Optional: Adds border to dropdown */
+}
+
+.traits button {
+    padding: 5px 10px;
+    background-color: #404040;
+    color: #FFA500;
+    border-radius: 8px; /* Rounded corners for the button */
+    cursor: pointer;
+    border: none;
+}
+
+.traits button:hover {
+    background-color: #ff8c00c2;
+}
+
+.skills-header {
+    display: flex;
+    justify-content: space-between; /* Keeps children at the start and end */
+    align-items: center; /* Vertically aligns items */
+    width: 100%; /* Ensures it spans the full container width */
+}
+
+h1 {
+    flex-grow: 1; /* Allows the h1 to take up all available space */
+    text-align: center; /* Centers the text within the space available */
+}
+
+.skills-section {
+    margin-top: 5px;
+    padding: 10px;
+    background-color: #222; /* A light background to make it stand out */
+    border: 2px solid gray;
+    border-radius: 5px;
+    color: #FFA500;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 4px;
+}
+
+table th, table td {
+    text-align: center;
+    padding: 8px;
+    border: 1px solid #FFA500; /* Orange borders */
+}
+
+table th {
+    background-color: #333;
+}
+
+table td {
+    background-color: #1f1f1f;
+}
+
+input[type="number"] {
+    text-align: right;
+    padding: 4px;
+    border: 2px solid gray;
+    border-radius: 8px;
+    width: 35%; /* Adjust as needed */
+    background-color: #222;
+    color: #FFA500;
+    text-align: center;
+    font-weight: bold; /* Makes the text bold */
+}
+
+.abilities-section {
+    border: 2px solid gray;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #222; /* Dark theme */
+    color: #FFA500; /* Orange text */
+}
+
+.abilities-section h3 {
+    text-align: center;
+    font-family: 'Corsiva';
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #FFA500;
+    padding: 8px;
+    text-align: center;
+}
+
+select {
+    width: 70%;
+    padding: 4px;
+    border: none;
+    background-color: #303030;
+    color: #FFA500;
+}
+
+button {
+    padding: 5px 10px;
+    background-color: #404040;
+    color: #FFA500;
+    border: none;
+    cursor: pointer;
+}
+
+th {
+    background-color: #303030;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #282828;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #303030;
+}
+
+.weapons-section {
+    margin-top: 5px;
+    border: 2px solid gray;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #222; /* Dark theme */
+    color: #FFA500; /* Orange text */
+}
+
+.weapon {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.weapon-name input {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    font-weight: bold; /* Makes the text bold */
+}
+
+.weapon-config {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.weapon-config label, .weapon-config select, .weapon-config input[type="number"] {
+    margin-right: 10px;
+    min-width: 150px;
+    font-weight: bold; /* Makes the text bold */
+}
+
+.weapon-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.weapon-actions button {
+    padding: 5px 20px;
+    margin-right: 10px;
+}
+
+.delete-button {
+    background-color: red;
+    color: white;
+    margin-left: auto; /* Push to the far right */
+}
+
+.armor-section {
+    margin-top: 5px;
+    border: 2px solid gray;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #222; /* Dark theme */
+    color: #FFA500; /* Orange text */
+    }
+
+.armor-section table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+.armor-section th, .armor-section td {
+    border: 1px solid #FFA500;
+    padding: 8px;
+    text-align: center;
+}
+
+.armor-section th {
+    background-color: #303030;
+}
+
+.accessories-section {
+    margin-top: 5px;
+    border: 2px solid gray;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #222; /* Dark theme */
+    color: #FFA500; /* Orange text */
+}
+
+.accessory {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #41403f; /* Light background for better readability */
+    padding: 1px;
+    border-radius: 8px;
+}
+
+.accessory input[type="text"], .accessory select {
+    flex-grow: 1; /* Allows the input and select to fill space */
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-weight: bold; /* Makes the text bold */
+}
+
+.accessory button {
+    padding: 5px 10px;
+    background-color: #404040;
+    color: #FFA500;
+    border: none;
+    cursor: pointer;
+}
+
+.accessory button:hover {
+    background-color: #ff8c00c2;
+}
+
+.inventory-section {
+    margin-top: 5px;
+    border: 2px solid gray;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #222; /* Dark theme */
+    color: #FFA500; /* Orange text */
+}
+
+.inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Ensures consistent column sizing */
+}
+
+.inventory-table th, .inventory-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #FFA500;
+}
+
+.inventory-table th {
+    background-color: #404040;
+    color: white;
+}
+
+/* Explicit width assignments for each column */
+.inventory-table th:nth-child(1), .inventory-table th:nth-child(3) {
+    width: 35%; /* Wider for items */
+}
+
+.inventory-table th:nth-child(2), .inventory-table th:nth-child(4) {
+    width: 15%; /* Narrower for amounts */
+}
+
+.inventory-table td input[type="text"] {
+    width: 100%; /* Full width of the cell */
+    box-sizing: border-box; /* Includes padding and border in the width */
+    font-weight: bold; /* Makes the text bold */
+}
+
+.toggle-button {
+    padding: 8px 16px;
+    background-color: #404040;
+    color: #FFA500;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.toggle-button:hover {
+    background-color: #555555;
+}
+
+#buffs-container {
+    margin-top: 5px;
+    border: 2px solid gray;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #222; /* Dark theme */
+    color: #FFA500; /* Orange text */
+}
+
+#buff-list div {
+    margin-top: 4px;
+}
+
+#buff-description {
+    margin-top: 4px;
+    padding: 10px;
+    background-color: #fffbea; /* A light background to make it stand out */
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    color: #333;
+}
+
+.spells-section {
+    margin-top: 5px;
+    border: 2px solid gray;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #222; /* Dark theme */
+    color: #FFA500; /* Orange text */
+}
+
+.classSelection {
+    padding: 5px 10px;
+    background-color: #404040;
+    color: #FFA500;
+    border: none;
+    cursor: pointer;
+}
+
+#toastContainer {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 250px;
+    z-index: 1000;
+}
+
+.toast {
+    background-color: #333;
+    color: #FFA500;
+    text-align: center;
+    border-radius: 8px;
+    border: 3px solid #555;
+    padding: 16px;
+    margin-top: 5px; /* Spacing between toasts */
+    opacity: 0; /* Start with toast invisible */
+    transform: translateX(100px); /* Start offscreen */
+    transition: all 0.5s ease; /* Transition for fading and sliding in */
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(0); /* Slide in */
+}
+
+#hpCircleContainer {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+.circular-chart {
+    display: block;
+    margin: 5px auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.circle-bg {
+    fill: none;
+    stroke: #555; /* light grey background for the circle */
+    stroke-width: 3.8;
+}
+
+.circle {
+    fill: none;
+    stroke-width: 2.8;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.6s ease-in-out, stroke 0.6s ease; /* Smooths transition of health decrease and color change */
+}
+
+#hpText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+@keyframes turn {
+    from { stroke-dashoffset: 100; }
+    to { stroke-dashoffset: 0; }
+}
+
+.circle {
+    fill: none;
+    stroke-width: 2.8;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.6s ease-in-out;  
+} 
+.ailments-section {
+    padding: 15px;
+    background-color: #222;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    color: #fff; /* Ensuring text is visible against a dark background */
+}
+
+.ailments-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Adjust columns based on your design */
+    gap: 10px;
+}
+
+.ailment {
+    position: relative; /* Needed for absolute positioning of tooltips */
+    display: flex;
+    align-items: center;
+}
+
+.ailment label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.ailment input[type="checkbox"] {
+    margin-right: 10px;
+    font-weight: bold; /* Makes the text bold */
+}
+
+.ailment i {
+    font-size: 24px; /* Icon size */
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    min-width: 150px; /* Minimum width of the tooltip */
+    max-width: 300px; /* Maximum width of the tooltip to avoid very long lines */
+    background-color: #333; /* Tooltip background color */
+    color: #fff; /* Tooltip text color */
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1000;
+    bottom: 150%; /* Position the tooltip below the icon */
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: normal; /* Allows text wrapping */
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.essences-section {
+    margin-top: 5px;
+    border: 2px solid gray;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #222; /* Dark theme */
+    color: #222; /* Orange text */
+}
+
+.essences-section h2, .essences-section h3 {
+    color: #333;
+    font-size: 24px; /* Icon size */
+}
+
+.common-essences, .rare-essences {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 5px;
+    font-size: 20px; /* Icon size */
+}
+
+.essence {
+    position: relative;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    font-family: Arial, Calibri, sans-serif;
+    font-size: 16px;
+    color: white; /* Improved text visibility */
+    border: 3px solid; /* Add border for metallic edge */
+}
+
+/* Individual essence styling with gradients */
+.essence#wind {
+    border-color: #78C850;  /* Light green color */
+    background: linear-gradient(135deg, #369706 30%, #78C850 70%);
+}
+
+.essence#wind::before {
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 70%);
+}
+
+.essence#wind::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+}
+
+#water {
+    background: linear-gradient(135deg, #2a9fff 30%, #70d2e0 70%);
+    border-color: #80f0ff;
+}
+
+.essence#earth {
+    border-color: #8B4513;  /* Dark brown color */
+    background: linear-gradient(135deg, #A0522D 30%, #8B4513 70%);
+}
+
+.essence#earth::before {
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 70%);
+}
+
+.essence#earth::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+}
+
+.essence#fire {
+    border-color: #b22222;  /* Darker red color */
+    background: linear-gradient(135deg, #b22222 30%, #8b0000 70%);
+}
+
+.essence#fire::before {
+    background: radial-gradient(circle at top right, rgba(255, 165, 0, 0.4), rgba(255, 99, 71, 0) 70%);
+}
+
+.essence#force {
+    border-color: #dcdcdc;  /* Greyish color */
+    background: linear-gradient(135deg, #fc8d4d 30%, #dcdcdc 70%);
+}
+
+.essence#force::before {
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.103), rgba(245, 245, 245, 0) 70%);
+}
+#ice {
+    background: linear-gradient(135deg, #6cb8ff 30%, #6884af 70%);
+    border-color: #7accff;
+}
+
+.essence#light {
+    border-color: #FFA07A;  /* Light Salmon color */
+    background: linear-gradient(135deg, #eeb517 30%, #faf398 70%);  /* Light orange to pale yellow gradient */
+}
+
+.essence#light::before {
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 70%);
+}
+
+.essence#light::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+}
+
+
+.essence#lightning {
+    border-color: #8A2BE2;  /* Blueviolet color */
+    background: linear-gradient(135deg, #8A2BE2 30%, #4169E1 70%);  /* Purple to blue gradient */
+}
+
+.essence#lightning::before {
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 70%);
+}
+
+.essence#lightning::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+}
+
+.essence#metal {
+    border-color: #A9A9A9;  /* Dark Gray color */
+    background: linear-gradient(135deg, #D3D3D3 30%, #696969 70%);  /* Dark grey to light grey gradient */
+}
+
+.essence#metal::before {
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0) 50%);
+}
+
+.essence#metal::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);  /* Deeper shadow for a more metallic effect */
+    pointer-events: none;
+}
+
+.essence#cosmic {
+    border-color: #000;  /* Black color for space */
+    background: linear-gradient(135deg, #000000 30%, #282828 70%);
+}
+
+.essence#cosmic::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+}
+
+.essence::before {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border-radius: 4px;
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 70%);
+    pointer-events: none;
+}
+
+.essence::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border-radius: 5px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+}
+
+.essence input {
+    flex-grow: 1;
+    margin-left: 10px;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold; /* Makes the text bold */
+    background: rgba(255, 255, 255, 0.2);
+    color: #000; /* Make input text darker for better readability */
+}
+
+/*.essence label {
+    width: 85px; 
+    font-family: Arial, Calibri, sans-serif;
+    font-size: 20px;
+    -webkit-text-stroke: #e4e4e4;
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.7); 
+    color: #000000;
+}*/
+
+.essence label {
+    font-family: Arial, sans-serif; /* Choosing a widely supported, bold-able font */
+    font-weight: bold; /* Makes the text bold */
+    color: white; /* High contrast on colorful backgrounds */
+    text-shadow: 1px 1px 1px black; /* Adds a black shadow to make text stand out more */
+}
+
+.attribute-section {
+    display: flex;
+    flex-direction: column;  /* Align children vertically */
+    align-items: stretch;    /* Stretch children to fill the width */
+    width: 100%;             /* Optional: make the section take full width */
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between; /* Space between the title and the button */
+    align-items: center;            /* Align items vertically in the center */
+    padding: 10px;                  /* Padding for aesthetic spacing */
+    background-color: #222;      /* Optional: background color for the header */
+    border-bottom: 1px solid #ccc;  /* Optional: border to separate header from content */
+}
+
+.section-header h1 {
+    margin: 0; /* Remove default margin from h1 */
+}
+
+.new-round-section {
+    display: flex;
+    justify-content: center;  
+    padding: 5px;
+}
+
+.new-round-button {
+    border: none;
+    cursor: pointer;
+    width: 200px;  
+    height: 200px;
+    padding: 0;  
+    background: none;  
+}
+
+.custom-tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .custom-tooltiptext {
+    visibility: hidden;
+    width: 160px;
+    background-color: #333; /* Dark grey background */
+    color: #FFA500; /* Bright orange text */
+    font-weight: bold;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -80px; /* Center the tooltip */
+    border: 1px solid #ccc; /* Light grey border */
+  
+    /* Fade in tooltip */
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  
+  .custom-tooltip:hover .custom-tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .attribute#LvL {
+    background: linear-gradient(to right, violet, indigo, blue, green, yellow, orange, red);
+    color: white; /* Ensures text visibility against the vibrant background */
+    font-weight: bold; /* Enhances the text */
+    border-radius: 8px; /* Smooths the corners */
+    padding: 4px; /* Adds some padding inside the element */
+    border: 2px solid #666; /* Adds a white border for better definition */
+}
+
+.attribute#LvL label,
+.attribute#LvL input {
+    width: 98%; /* Ensures the label and input fill the container */
+    text-align: center; /* Centers the text */
+}
+
+.attribute#LvL input {
+    background: transparent; /* Makes the input background transparent */
+    border: none; /* Removes the default input border */
+    color: inherit; /* Inherits the white color from the parent for visibility */
+    font-size: 1.4em; /* Increases the font size for better readability */
+}
+
+/* General style for the tab content */
+.tabcontent {
+    padding: 10px;
+    background-color: #222;
+    border: 1px solid #666;
+    margin-top: 5px;
+    display: none; /* Ensure it's hidden initially */
+}
+
+.tablinks {
+    background-color: #222;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 16px;
+    transition: 0.3s;
+    font-size: 1rem;
+}
+
+.tablinks.active, .tablinks:hover {
+    background-color: #333;
+}
+
+/* Style for the container of each spell */
+.spell {
+    border-bottom: 1px solid #666;
+    padding: 8px;
+    background-color: #222;
+    margin-bottom: 5px;
+    position: relative; /* Needed for absolute positioning of the cost */
+}
+
+/* Style for the spell's heading and checkbox */
+.spell > strong {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem; /* Larger font size for better readability */
+    font-weight: bold; /* Make the font bold */
+    padding-bottom: 5px; /* Add some space below the heading */
+}
+
+/* Specific style for the spell cost */
+.spell .spell-cost {
+    position: absolute;
+    top: 8px;
+    right: 8px; /* Position it at the top right corner */
+    background-color: #222; /* Light grey background */
+    padding: 5px 10px;
+    border-radius: 5px; /* Rounded corners for the cost badge */
+    font-weight: bold;
+}
+
+.spell-details p {
+    margin: 2px 0;
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.spell-details p strong {
+    min-width: 120px; /* Ensure labels have some width */
+}
+
+/* Styling for details to make text slightly larger and bold for titles */
+.spell-details p {
+    margin: 2px 0;
+    font-size: 1rem; /* Slightly larger for readability */
+}
+
+.spell-details p.title {
+    font-weight: bold; /* Bold for titles within details */
+}
+
+.learned-checkbox + label {
+    position: relative;
+    padding-left: 35px; 
+    cursor: pointer;
+    display: inline-block;
+    line-height: 25px; 
+    color: #111; 
+}
+
+.learned-checkbox + label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 2px solid #FFA500; 
+    background-color: #111; 
+    box-sizing: border-box;
+}
+
+.learned-checkbox:checked + label:before {
+    background-color: #FFA500; 
+    border: 2px solid #666; 
+}
+
+.learned-checkbox:checked + label:after {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid #444;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg); 
+}

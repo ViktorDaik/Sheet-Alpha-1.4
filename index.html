@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <title>Bestiarium Character Sheet</title>
+        <script src="script.js" defer></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="css/rpg-awesome.min.css">
+    </head>
+
+<body>
+    <header>
+        <img src="https://i.imgur.com/g6A9npy.png" alt="Banner" id="headerBanner" style="width: 100%; height: auto;">
+    </header>
+    
+    <main>
+        <button id="saveButton" onclick="saveFormData()">Save Character</button>
+        <input type="file" id="fileInput" accept="application/json" onchange="loadFormData()" style="display: none;">
+        <button id="loadButton">Load Character Data</button>
+        <i class="fas fa-heart"></i>
+        <div class="list-group">
+            </div>
+        <div id="toast"></div>
+         <!-- Your form and inputs will go here -->
+         <div class="container">
+            <div class="character-image-section">
+                <label for="characterImage" class="image-upload-label">Upload Character Image:</label>
+                <input type="file" id="characterImage" name="characterImage" accept="image/*" onchange="previewImage();" style="display: none;">
+                <div id="imageContainer" onclick="document.getElementById('characterImage').click();" style="cursor: pointer;">
+                    <img id="displayImage" src="" alt="Character Image" style="max-width: 100%; display: none; margin-top: 10px;">
+                    <div id="imagePlaceholder" style="width: 200px; height: 200px; border: 2px #111; display: flex; align-items: center; justify-content: center; color: #222;">
+                        Click to upload image
+                    </div>
+                </div>
+            </div>
+            
+            <div class="character-details">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" class="form-control">
+                </div>
+                <div class="attribute" id="RaceSection">
+                    <label for="race">Race</label>
+                    <select id="race" name="race">
+                        <option value="Human">Human</option>
+                        <option value="Volar">Volar</option>
+                        <option value="Felis">Felis</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <button type="button" id="raceInfoBtn">Learn More</button>
+                </div>     
+                <div class="form-group">
+                    <label for="height">Height:</label>
+                    <input type="text" id="height" name="height" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="weight">Weight:</label>
+                    <input type="text" id="weight" name="weight" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" name="age" class="form-control">
+                </div>
+            </div>
+        </div>
+        
+        <div class="attribute-section">
+            <div class="section-header custom-tooltip">
+                <h1>Attributes</h1>
+                <button class="toggle-button" onclick="toggleSection('attributes-container')">Hide/Show Attributes</button>
+                <span class="custom-tooltiptext">
+                    At character creation you get 30 points to spend on this section, with each level up you get 2 more points to spend. You can also roll a D12 for VIT, FIT and THM and add +1 to the result if you like random stats.
+                </span>
+            </div>
+            <div id="attributes-container" class="attributes-container">
+                <div class="main-attributes">
+                    <!-- Vitality -->
+                    <div class="attribute" title="Increases max HP and boosts the strength of most weapons" id="VIT">
+                        <label for="vit">Vitality (VIT)</label>
+                        <input type="number" id="vit" name="vit" min="0">     
+                    </div>
+                    <!-- Fitness -->
+                    <div class="attribute" title="Increases movement speed, stamina regeneration and boosts the strength of some weapons" id="FIT">
+                        <label for="fit">Fitness (FIT)</label>
+                        <input type="number" id="fit" name="fit" min="0">
+                    </div>
+                    <!-- Level -->
+                    <div class="attribute" id="LvL">
+                        <label for="thm">Level</label>
+                        <input type="number" id="lvl" name="lvl" min="0" max="20">
+                    </div>
+                    <!-- Thaumaturgy -->
+                    <div class="attribute" title="Increases spell damage, essences per turn and boosts the strength of a few weapons" id="THM">
+                        <label for="thm">Thaumaturgy (THM)</label>
+                        <input type="number" id="thm" name="thm" min="0">
+                    </div>
+                    <!-- Defense -->
+                    <div class="attribute" title="Reduces physical damage until depleted. Refills at the start of a new round." id="DEF">
+                        <label for="def">Defense (DEF)</label>
+                        <input type="number" id="totalDEF" name="def" readonly>
+                    </div>
+                </div>
+                <div class="secondary-attributes">
+                    <!-- Maximum Health Points -->
+                    <div class="attribute" title="The maximum amount of health your character can have." id="MAXHP">
+                        <label for="maxHp">Maximum Health Points (Max HP)</label>
+                        <input type="number" id="maxHP" name="maxHP" readonly>
+                    </div>
+                        <!-- Stamina -->
+                    <div class="attribute" title="Almost every action costs stamina: Blocking(1), Dodging (2), Attacking (depending on weapon weight (light, medium, heavy) 2, 1 or 2 attacks for 1 stamina), casting spells (depends on the spell)" id="STA">
+                            <label for="sta">Stamina Per Round (STA)</label>
+                            <input type="number" id="sta" name="sta" readonly value="2">
+                    </div>
+                    <!-- Movement -->
+                    <div class="attribute" title="The distance your character can move during combat"  id="MOV">
+                        <label for="mov">Movement (MOV)</label>
+                        <input type="number" id="mov" name="mov" readonly>
+                    </div>
+                    <!-- Essences Per Turn  -->
+                    <div class="attribute" title="The limit to how many essences can be used per turn to cast spells." id="EPR">
+                        <label for="epr">Essences Per Round</label>
+                        <input type="number" id="epr" name="epr" min="0">
+                    </div>
+                    <!-- Magic Defense -->
+                    <div class="attribute" title="Reduces magical damage until depleted. Refills at the start of a new round." id="MDEF">
+                        <label for="mdef">Magic Defense (MDEF)</label>
+                        <input type="number" id="totalMDEF" name="mdef" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="combat-attribute-section">
+            <div class="attribute" title="Your current health. Keep this above 0 to stay alive. There are no second chances!" id="HP">
+                <label for="hp">Current Health Points (HP)</label>
+                <input type="number" id="hp" name="hp" min="0">
+            </div>
+            <div class="attribute" title="The Stamina you have right now. You should work out more instead of playing this." id="STAM">
+                <label for="stam">Current Stamina (maximum 10)</label>
+                <input type="number" id="stam" name="stam" min="0" max="10">
+            </div>
+            <div class="attribute" id="CEPR">
+                <label for="epr">Current Essences (for the Round)</label>
+                <input type="number" id="cepr" name="cepr" min="0">
+            </div>
+                <!-- HP Bar Display -->
+                    <div id="hpCircleContainer">
+                        <svg viewBox="0 0 36 36" class="circular-chart">
+                            <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#eee" stroke-width="2.8" />
+                            <path class="circle" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#f00" stroke-width="2.8" stroke-linecap="round" style="stroke-dasharray: 100, 100; stroke-dashoffset: 100;"></path>
+                        </svg>
+                        <div id="hpText">HP: 100 / 100</div>
+                    </div>
+        </div>
+
+        <div class="new-round-section">
+            <button onclick="rest()" id="newRoundButton"class="new-round-button">
+                <img src="https://i.imgur.com/b7AklPe.png" title="Rest to heal 50% of your maxHP." alt="New Round" style="width: 100%; height: auto;">
+            </button>    
+            <button onclick="newRound()" id="newRoundButton" class="new-round-button">
+                <img src="https://i.imgur.com/rs71NG8.png" title="Starts a new round. This updates current stamina, essences, buffs, damage from ailments, etc." alt="New Round" style="width: 100%; height: auto;">
+            </button>
+        </div>
+        
+        <div class="weapons-section">
+            <div class="skills-header">
+                <h1>Weapons</h1>
+                <button class="toggle-button" onclick="toggleSection('weapons-section')">Hide/Show</button>
+            </div>
+            <div class="weapons-section" id="weapons-section">
+
+                <div id="weapons-container">
+                    <!-- Weapons will be dynamically added here -->
+                </div>
+                <button onclick="addWeapon()" title="Creates things, that make it easier to hurt others.">Add Weapon</button>
+            </div>
+        </div>
+        
+        <div class="spells-section">
+            <div class="skills-header" title="Don't ask how it works. Just be glad that it does!">
+                <h1>Spells</h1>
+                <button class="toggle-button" onclick="toggleSection('spells-section')">Hide/Show</button>
+            </div>
+            <div class="spells-section" id="spells-section">
+            <!-- Class Selection Dropdown -->
+            <label for="classSelection">Choose a Casting Class:</label>
+            <select id="classSelection" onchange="updateSpellsTable()">
+                <option value="">Select a Class</option>
+                <option value="Dynamist">Dynamist</option>
+                <option value="Elementalist">Elementalist</option>
+                <option value="CurseAdept">Curse Adept</option>
+                <option value="Conductor">Conductor</option>
+                <option value="Tecromancer">Tecromancer</option>
+            </select>
+        
+            <!-- Tabs for spell types -->
+            <div class="tab">
+                <button class="tablinks" onclick="openTab(event, 'Attack')">Attack</button>
+                <button class="tablinks" onclick="openTab(event, 'Buff')">Buff</button>
+                <button class="tablinks" onclick="openTab(event, 'Debuff')">Debuff</button>
+            </div>
+        
+            <!-- Tab content for each spell type -->
+            <div id="Attack" class="tabcontent"></div>
+            <div id="Buff" class="tabcontent"></div>
+            <div id="Debuff" class="tabcontent"></div>
+            </div>
+        </div>
+        
+        <div class="essences-section">
+            <div class="skills-header" title="Small crystals that enable anyone to cast spells.">
+                <h1>Essences</h1>
+                <button class="toggle-button" onclick="toggleSection('essences-section')">Hide/Show</button>
+            </div>
+            <div class="essences-section" id="essences-section">
+            <div class="common-essences">
+                <div class="essence" id="wind">
+                    <label for="windEssence">Wind</label><i class="corner-icon ra ra-feathered-wing ra-2x" style="color: #ced3d7;"></i>
+                    <input type="number" id="windEssence" name="windEssence" value="0" min="0">
+                </div>
+                <div class="essence" id="water">
+                    <label for="waterEssence">Water</label><i class="corner-icon ra ra-droplet ra-2x" style="color: #3471cf;"></i>
+                    <input type="number" id="waterEssence" name="waterEssence" value="0" min="0">
+                </div>
+                <div class="essence" id="earth">
+                    <label for="earthEssence">Earth</label><i class="ra ra-groundbreaker ra-2x" style="color: #4d3221;"></i>
+                    <input type="number" id="earthEssence" name="earthEssence" value="0" min="0">
+                </div>
+                <div class="essence" id="fire">
+                    <label for="fireEssence">Fire</label><i class="ra ra-small-fire ra-2x" style="color: #e16320;"></i>
+                    <input type="number" id="fireEssence" name="fireEssence" value="0" min="0">
+                </div>
+                <div class="essence" id="ice">
+                    <label for="iceEssence">Ice</label><i class="ra ra-snowflake ra-2x" style="color: #a4e2e4;"></i>
+                    <input type="number" id="iceEssence" name="iceEssence" value="0" min="0">
+                </div>
+                <div class="essence" id="force">
+                    <label for="forceEssence">Force</label><i class="ra ra-blaster ra-2x" style="color: #bba090;"></i>
+                    <input type="number" id="forceEssence" name="forceEssence" value="0" min="0">
+                </div>
+            </div>
+        
+            <div class="rare-essences">
+                <div class="essence" id="light">
+                    <label for="lightEssence">Light</label><i class="ra ra-moon-sun ra-2x" style="color: #f4e2ab;"></i>
+                    <input type="number" id="lightEssence" name="lightEssence" value="0" min="0">
+                </div>
+                <div class="essence" id="lightning">
+                    <label for="lightningEssence">Lightning</label><i class="ra ra-lightning-bolt ra-2x" style="color: #eeeeda;"></i>
+                    <input type="number" id="lightningEssence" name="lightningEssence" value="0" min="0">
+                </div>
+                <div class="essence" id="metal">
+                    <label for="metalEssence">Metal</label><i class="ra ra-gold-bar ra-2x" style="color: #6e6f75;"></i>
+                    <input type="number" id="metalEssence" name="metalEssence" value="0" min="0">
+                </div>
+                <div class="essence" id="cosmic">
+                    <label for="cosmicEssence">Cosmic</label><i class="ra ra-ball ra-2x" style="color: #3e3756;"></i>
+                    <input type="number" id="cosmicEssence" name="cosmicEssence" value="0" min="0">
+                </div>
+            </div>
+            </div>
+        </div>              
+
+        <div id="buffs-container">
+            <div class="skills-header" title="Buffs are positive effects! Debuffs and ailments are negative effects! You want a lot of Buffs!">
+                <h1>Buffs</h1>
+                <button class="toggle-button" onclick="toggleSection('buff-list')">Hide/Show</button>
+            </div>
+
+            <div id="buff-list">
+                <button onclick="addBuff()">Add Buff</button>
+            </div>
+        </div>
+
+        <div class="ailments-section">
+            <div class="skills-header" title="These are bad conditions that you might be in. The more you have, the more likely you are to un-survive.">
+                <h1>Ailments</h1>
+                <button class="toggle-button" onclick="toggleSection('ailments-content')">Hide/Show</button>
+            </div>
+            <div id="ailments-content" class="ailments-container" data-display-type="grid">
+                <div>
+                    <label for="bleedingStacks">Bleeding Stacks:</label>
+                    <input type="number" id="bleedingStacks" value="0" min="0" max="20">
+                </div>
+                <div>
+                    <label for="poisonStacks">Poison Stacks:</label>
+                    <input type="number" id="poisonStacks" value="0" min="0" max="20">
+                </div>                
+            </div>
+        </div>
+        
+        <div class="abilities-section">
+            <div class="skills-header" title="Abilities allow you to adapt to your surroundings, gain an advantage over your foes or just look really cool with a sword.">
+                <h1>Abilities</h1>
+                <button class="toggle-button" onclick="toggleSection('abilities-section')">Hide/Show</button>
+            </div>
+                <div class="abilities-section" id="abilities-section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Level</th>
+                            <th>Weapon-Related Abilities</th>
+                            <th>Additional Abilities</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Content dynamically generated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <img src="https://i.imgur.com/FT7VI0L.png" alt="Banner" id="headerBanner" style="width: 100%; height: auto;">
+
+        <div class="traits-container">
+            <div class="traits-section" title="For each positive trait there has to be a negative one! When your character dies, all traits are reset. Feel free to spin the wheel!">
+                <h2>Positive Traits</h2>
+                <div id="positiveTraits"></div>  <!-- Container for positive traits -->
+            </div>
+            <div class="traits-section">
+                <h2>Negative Traits</h2>
+                <div id="negativeTraits"></div>  <!-- Container for negative traits -->
+            </div>
+        </div>
+            
+            <div class="skills-section">
+                <div class="skills-header" title="At character creation you get 10 points to spend on each section (Social, Survival, Movement) each point translates into a +1 bonus on your rolls/skill checks. Skills can be leveled up with certain events or by getting taught by a master.">
+                    <h1>Skills</h1>
+                    <button class="toggle-button" onclick="toggleSection('skills-section')">Hide/Show</button>
+                </div>
+                <div class="skills-section" id="skills-section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th title="How good are you with people?">Social Skills</th>
+                                <th title="Can you survive on your own for more than a day?">Survival Skills</th>
+                                <th title="DO A FLIP!">Movement Skills</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td title="Shows how good you can talk to others."><label>Speech  <input type="number" name="speech"></label></td>
+                                <td title="You can tell plants apart. You're now less likely to eat poison!"><label>Botany  <input type="number" name="botany"></label></td>
+                                <td title="Shows how good you can swim."><label>Swimming  <input type="number" name="swimming"></label></td>
+                            </tr>
+                            <tr>
+                                <td title="Shows how bad you can talk to others."><label>Intimidation  <input type="number" name="intimidation"></label></td>
+                                <td title="You can tell animals apart and befriend them!"><label>Zoology  <input type="number" name="zoology"></label></td>
+                                <td title="You can climb!"><label>Climbing  <input type="number" name="climbing"></label></td>
+                            </tr>
+                            <tr>
+                                <td title="Your ability to lead others and make them do what you want."><label>Leadership  <input type="number" name="leadership"></label></td>
+                                <td title="Shows how good you build and find traps."><label>Trapping  <input type="number" name="trapping"></label></td>
+                                <td title="Shows how good you can move without being heard or spotted (doesn't allow you to defy common sense)"><label>Sneaking  <input type="number" name="sneaking"></label></td>
+                            </tr>
+                            <tr>
+                                <td title="A must have for any bard! (disclaimer: bard is a profession, not a combat class!)"><label>Singing and Dancing  <input type="number" name="singing_dancing"></label></td>
+                                <td title="You can find a lot of things in the wild if you know where to look."><label>Foraging  <input type="number" name="foraging"></label></td>
+                                <td title="You are less likely to fall off your horse, your dragon, your griffon, your companions shoulders, etc."><label>Riding  <input type="number" name="riding"></label></td>
+                            </tr>
+                            <tr>
+                                <td title="Shows how good you can console others."><label>Empathy  <input type="number" name="empathy"></label></td>
+                                <td title="You can spot a lot of things if you're perceptive, including essences!"><label>Perception  <input type="number" name="perception"></label></td>
+                                <td title="You are less likely to get lost in strange places."><label>Orientation  <input type="number" name="orientation"></label></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="armor-section">
+                <div class="skills-header" title="This section is for very expensive people-wrappers that make you survive longer in combat!">
+                    <h1>Armor</h1>
+                    <button class="toggle-button" onclick="toggleSection('armor-section')">Hide/Show</button>
+                </div>
+                <div class="armor-section" id="armor-section">
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Armor Piece</th>
+                                <th>Name</th>
+                                <th>DEF</th>
+                                <th>MDEF</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Head</td>
+                                <td><input type="text" id="headName"></td>
+                                <td><input type="number" id="headDEF" class="armor-def" onchange="updateTotalDEFMDEF()"></td>
+                                <td><input type="number" id="headMDEF" class="armor-mdef" onchange="updateTotalDEFMDEF()"></td>
+                            </tr>
+                            <tr>
+                                <td>Body</td>
+                                <td><input type="text" id="bodyName"></td>
+                                <td><input type="number" id="bodyDEF" class="armor-def" onchange="updateTotalDEFMDEF()"></td>
+                                <td><input type="number" id="bodyMDEF" class="armor-mdef" onchange="updateTotalDEFMDEF()"></td>
+                            </tr>
+                            <tr>
+                                <td>Arms</td>
+                                <td><input type="text" id="armsName"></td>
+                                <td><input type="number" id="armsDEF" class="armor-def" onchange="updateTotalDEFMDEF()"></td>
+                                <td><input type="number" id="armsMDEF" class="armor-mdef" onchange="updateTotalDEFMDEF()"></td>
+                            </tr>
+                            <tr>
+                                <td>Legs</td>
+                                <td><input type="text" id="legsName"></td>
+                                <td><input type="number" id="legsDEF" class="armor-def" onchange="updateTotalDEFMDEF()"></td>
+                                <td><input type="number" id="legsMDEF" class="armor-mdef" onchange="updateTotalDEFMDEF()"></td>
+                            </tr>
+                            <tr>
+                                <td>Feet</td>
+                                <td><input type="text" id="feetName"></td>
+                                <td><input type="number" id="feetDEF" class="armor-def" onchange="updateTotalDEFMDEF()"></td>
+                                <td><input type="number" id="feetMDEF" class="armor-mdef" onchange="updateTotalDEFMDEF()"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="accessories-section">
+                <div class="skills-header" title="Special items that can grant you additional abilities or just look really pretty.">
+                    <h1>Accessories</h1>
+                    <button class="toggle-button" onclick="toggleSection('accessories-section')">Hide/Show</button>
+                </div>
+                <div class="accessories-section" id="accessories-section">
+
+                    <div class="accessory" id="accessory1">
+                        <input type="text" placeholder="Accessory Name" id="accessoryName1" >
+                        <select id="accessoryAbility1">
+                            <option value="">Select Ability</option>
+                            <!-- Options for abilities -->
+                        </select>
+                        <button onclick="openAbilityInfo('accessoryAbility1')">Learn More</button>
+                    </div>
+                    <div class="accessory" id="accessory2">
+                        <input type="text" placeholder="Accessory Name" id="accessoryName2">
+                        <select id="accessoryAbility2">
+                            <option value="">Select Ability</option>
+                            <!-- Options for abilities -->
+                        </select>
+                        <button onclick="openAbilityInfo('accessoryAbility2')">Learn More</button>
+                    </div>
+                    <div class="accessory" id="accessory3">
+                        <input type="text" placeholder="Accessory Name" id="accessoryName3">
+                        <select id="accessoryAbility3">
+                            <option value="">Select Ability</option>
+                            <!-- Options for abilities -->
+                        </select>
+                        <button onclick="openAbilityInfo('accessoryAbility3')">Learn More</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="inventory-section">
+                <div class="skills-header" title="The stuff you carry with you. There is no official weight limit but keep it somewhat realistic, please.">
+                    <h1>Inventory</h1>
+                    <button class="toggle-button" onclick="toggleSection('inventory-section')">Hide/Show</button>
+                </div>
+                <div class="inventory-section" id="inventory-section">
+
+                    <table class="inventory-table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Amount</th>
+                                <th>Item</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+            <button id="saveButton" onclick="saveFormData()">Save Character</button> 
+    </main>
+
+    <footer>
+
+        <img src="https://i.imgur.com/MQARi1c.png" alt="Banner" id="headerBanner" style="width: 100%; height: auto;">
+        <p>By Viktor Daik</p>
+
+    </footer>
+
+</body>
+</html>
