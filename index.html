@@ -96,11 +96,6 @@
                         <label for="thm">Thaumaturgy (THM)</label>
                         <input type="number" id="thm" name="thm" min="0">
                     </div>
-                    <!-- Defense -->
-                    <div class="attribute" title="Reduces physical damage until depleted. Refills at the start of a new round." id="DEF">
-                        <label for="def">Defense (DEF)</label>
-                        <input type="number" id="totalDEF" name="def" readonly>
-                    </div>
                 </div>
                 <div class="secondary-attributes">
                     <!-- Maximum Health Points -->
@@ -123,37 +118,298 @@
                         <label for="epr">Essences Per Round</label>
                         <input type="number" id="epr" name="epr" min="0">
                     </div>
-                    <!-- Magic Defense -->
-                    <div class="attribute" title="Reduces magical damage until depleted. Refills at the start of a new round." id="MDEF">
-                        <label for="mdef">Magic Defense (MDEF)</label>
-                        <input type="number" id="totalMDEF" name="mdef" readonly>
-                    </div>
+
                 </div>
             </div>
         </div>
 
-        <div class="combat-attribute-section">
-            <div class="attribute" title="Your current health. Keep this above 0 to stay alive. There are no second chances!" id="HP">
-                <label for="hp">Current Health Points (HP)</label>
-                <input type="number" id="hp" name="hp" min="0">
+        <div class="traits-container">
+            <div class="traits-section" title="For each positive trait there has to be a negative one! When your character dies, all traits are reset. Feel free to spin the wheel!">
+                <h2>Positive Traits</h2>
+                <div id="positiveTraits"></div>  <!-- Container for positive traits -->
             </div>
-            <div class="attribute" title="The Stamina you have right now. You should work out more instead of playing this." id="STAM">
-                <label for="stam">Current Stamina (maximum 10)</label>
-                <input type="number" id="stam" name="stam" min="0" max="10">
+            <div class="traits-section">
+                <h2>Negative Traits</h2>
+                <div id="negativeTraits"></div>  <!-- Container for negative traits -->
             </div>
-            <div class="attribute" id="CEPR">
-                <label for="epr">Current Essences (for the Round)</label>
-                <input type="number" id="cepr" name="cepr" min="0">
-            </div>
-                <!-- HP Bar Display -->
-                    <div id="hpCircleContainer">
-                        <svg viewBox="0 0 36 36" class="circular-chart">
-                            <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#eee" stroke-width="2.8" />
-                            <path class="circle" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#f00" stroke-width="2.8" stroke-linecap="round" style="stroke-dasharray: 100, 100; stroke-dashoffset: 100;"></path>
-                        </svg>
-                        <div id="hpText">HP: 100 / 100</div>
-                    </div>
         </div>
+
+        <div class="skills-section">
+            <div class="skills-header" title="At character creation you get 10 points to spend on each section (Social, Survival, Movement) each point translates into a +1 bonus on your rolls/skill checks. Skills can be leveled up with certain events or by getting taught by a master.">
+                <h1>Skills</h1>
+                <button class="toggle-button" onclick="toggleSection('skills-section')">Hide/Show</button>
+            </div>
+            <div class="skills-section" id="skills-section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th title="How good are you with people?">Social Skills</th>
+                            <th title="Can you survive on your own for more than a day?">Survival Skills</th>
+                            <th title="DO A FLIP!">Movement Skills</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td title="Shows how good you can talk to others."><label>Speech  <input type="number" name="speech"></label></td>
+                            <td title="You can tell plants apart. You're now less likely to eat poison!"><label>Botany  <input type="number" name="botany"></label></td>
+                            <td title="Shows how good you can swim."><label>Swimming  <input type="number" name="swimming"></label></td>
+                        </tr>
+                        <tr>
+                            <td title="Shows how bad you can talk to others."><label>Intimidation  <input type="number" name="intimidation"></label></td>
+                            <td title="You can tell animals apart and befriend them!"><label>Zoology  <input type="number" name="zoology"></label></td>
+                            <td title="You can climb!"><label>Climbing  <input type="number" name="climbing"></label></td>
+                        </tr>
+                        <tr>
+                            <td title="Your ability to lead others and make them do what you want."><label>Leadership  <input type="number" name="leadership"></label></td>
+                            <td title="Shows how good you build and find traps."><label>Trapping  <input type="number" name="trapping"></label></td>
+                            <td title="Shows how good you can move without being heard or spotted (doesn't allow you to defy common sense)"><label>Sneaking  <input type="number" name="sneaking"></label></td>
+                        </tr>
+                        <tr>
+                            <td title="A must have for any bard! (disclaimer: bard is a profession, not a combat class!)"><label>Singing and Dancing  <input type="number" name="singing_dancing"></label></td>
+                            <td title="You can find a lot of things in the wild if you know where to look."><label>Foraging  <input type="number" name="foraging"></label></td>
+                            <td title="You are less likely to fall off your horse, your dragon, your griffon, your companions shoulders, etc."><label>Riding  <input type="number" name="riding"></label></td>
+                        </tr>
+                        <tr>
+                            <td title="Shows how good you can console others."><label>Empathy  <input type="number" name="empathy"></label></td>
+                            <td title="You can spot a lot of things if you're perceptive, including essences!"><label>Perception  <input type="number" name="perception"></label></td>
+                            <td title="You are less likely to get lost in strange places."><label>Orientation  <input type="number" name="orientation"></label></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <img src="https://i.imgur.com/FT7VI0L.png" alt="Banner" id="headerBanner" style="width: 100%; height: auto;">
+
+
+        <div class="armor-section">
+            <div class="skills-header" title="This section is for very expensive people-wrappers that make you survive longer in combat!">
+                <h1>Armor</h1>
+                <button class="toggle-button" onclick="toggleSection('armor-section')">Hide/Show</button>
+            </div>
+            <div class="armor-section" id="armor-section">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Armor Piece</th>
+                            <th>Name</th>
+                            <th>DEF</th>
+                            <th>MDEF</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Head</td>
+                            <td><input type="text" id="headName"></td>
+                            <td><input type="number" id="headDEF" class="armor-def" onchange="updateTotalDEFMDEF()"></td>
+                            <td><input type="number" id="headMDEF" class="armor-mdef" onchange="updateTotalDEFMDEF()"></td>
+                        </tr>
+                        <tr>
+                            <td>Body</td>
+                            <td><input type="text" id="bodyName"></td>
+                            <td><input type="number" id="bodyDEF" class="armor-def" onchange="updateTotalDEFMDEF()"></td>
+                            <td><input type="number" id="bodyMDEF" class="armor-mdef" onchange="updateTotalDEFMDEF()"></td>
+                        </tr>
+                        <tr>
+                            <td>Arms</td>
+                            <td><input type="text" id="armsName"></td>
+                            <td><input type="number" id="armsDEF" class="armor-def" onchange="updateTotalDEFMDEF()"></td>
+                            <td><input type="number" id="armsMDEF" class="armor-mdef" onchange="updateTotalDEFMDEF()"></td>
+                        </tr>
+                        <tr>
+                            <td>Legs</td>
+                            <td><input type="text" id="legsName"></td>
+                            <td><input type="number" id="legsDEF" class="armor-def" onchange="updateTotalDEFMDEF()"></td>
+                            <td><input type="number" id="legsMDEF" class="armor-mdef" onchange="updateTotalDEFMDEF()"></td>
+                        </tr>
+                        <tr>
+                            <td>Feet</td>
+                            <td><input type="text" id="feetName"></td>
+                            <td><input type="number" id="feetDEF" class="armor-def" onchange="updateTotalDEFMDEF()"></td>
+                            <td><input type="number" id="feetMDEF" class="armor-mdef" onchange="updateTotalDEFMDEF()"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="accessories-section">
+            <div class="skills-header" title="Special items that can grant you additional abilities or just look really pretty.">
+                <h1>Accessories</h1>
+                <button class="toggle-button" onclick="toggleSection('accessories-section')">Hide/Show</button>
+            </div>
+            <div class="accessories-section" id="accessories-section">
+
+                <div class="accessory" id="accessory1">
+                    <input type="text" placeholder="Accessory Name" id="accessoryName1" >
+                    <select id="accessoryAbility1">
+                        <option value="">Select Ability</option>
+                        <!-- Options for abilities -->
+                    </select>
+                    <button onclick="openAbilityInfo('accessoryAbility1')">Learn More</button>
+                </div>
+                <div class="accessory" id="accessory2">
+                    <input type="text" placeholder="Accessory Name" id="accessoryName2">
+                    <select id="accessoryAbility2">
+                        <option value="">Select Ability</option>
+                        <!-- Options for abilities -->
+                    </select>
+                    <button onclick="openAbilityInfo('accessoryAbility2')">Learn More</button>
+                </div>
+                <div class="accessory" id="accessory3">
+                    <input type="text" placeholder="Accessory Name" id="accessoryName3">
+                    <select id="accessoryAbility3">
+                        <option value="">Select Ability</option>
+                        <!-- Options for abilities -->
+                    </select>
+                    <button onclick="openAbilityInfo('accessoryAbility3')">Learn More</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="inventory-section">
+            <div class="skills-header" title="The stuff you carry with you. There is no official weight limit but keep it somewhat realistic, please.">
+                <h1>Inventory</h1>
+                <button class="toggle-button" onclick="toggleSection('inventory-section')">Hide/Show</button>
+            </div>
+            <div class="inventory-section" id="inventory-section">
+
+                <table class="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Amount</th>
+                            <th>Item</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                            <td><input type="text" class="item-input" placeholder="Enter item name"></td>
+                            <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div> 
 
         <div class="new-round-section">
             <button onclick="rest()" id="newRoundButton"class="new-round-button">
@@ -162,7 +418,53 @@
             <button onclick="newRound()" id="newRoundButton" class="new-round-button">
                 <img src="https://i.imgur.com/rs71NG8.png" title="Starts a new round. This updates current stamina, essences, buffs, damage from ailments, etc." alt="New Round" style="width: 100%; height: auto;">
             </button>
-        </div>
+            <div class="attribute" title="Your current health. Keep this above 0 to stay alive. There are no second chances!" id="HP">
+                <label for="hp">Current Health Points (HP)</label>
+                <div id="hpCircleContainer">
+                    <svg viewBox="0 0 36 36" class="circular-chart">
+                        <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#eee" stroke-width="2.8" />
+                        <path class="circle" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#f00" stroke-width="2.8" stroke-linecap="round" style="stroke-dasharray: 100, 100; stroke-dashoffset: 100;"></path>
+                    </svg>
+                    <input type="number" id="hp" name="hp" min="0" class="hp-circle-input">
+
+                    <div id="hpText">HP: 100 / 100</div>
+                </div>
+            </div>
+            
+            <div class="attribute" title="Your current stamina. Used to perform actions." id="Stamina">
+                <label for="stamina">Current Stamina Points</label>
+                <div id="staminaCircleContainer">
+                    <svg viewBox="0 0 36 36" class="circular-chart">
+                        <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#eee" stroke-width="2.8" />
+                        <path class="circle" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#f00" stroke-width="2.8" stroke-linecap="round" style="stroke-dasharray: 100, 100; stroke-dashoffset: 100;"></path>
+                    </svg>
+                    <input type="number" id="stamina" name="stamina" min="0" max="10" class="stamina-circle-input">
+                    
+                    <div id="staminaText">Stamina: / 10</div>
+                </div>
+            </div>
+            
+            
+
+            <div class="attribute" id="CEPR" title="The amount of essences that can be used by the character in this round.">
+                <label for="epr">Available Essences</label>
+                <input type="number" id="cepr" name="cepr" min="0">
+            </div>
+
+
+                    <!-- Magic Defense -->
+                    <div class="attribute" title="Reduces magical damage until depleted. Refills at the start of a new round." id="MDEF">
+                        <label for="mdef">Magic Defense (MDEF)</label>
+                        <input type="number" id="totalMDEF" name="mdef" readonly>
+                    </div>
+                    <!-- Defense -->
+                    <div class="attribute" title="Reduces physical damage until depleted. Refills at the start of a new round." id="DEF">
+                        <label for="def">Defense (DEF)</label>
+                        <input type="number" id="totalDEF" name="def" readonly>
+                    </div>
+                </div>
+
+
         
         <div class="weapons-section">
             <div class="skills-header">
@@ -312,292 +614,6 @@
             </div>
         </div>
 
-        <img src="https://i.imgur.com/FT7VI0L.png" alt="Banner" id="headerBanner" style="width: 100%; height: auto;">
-
-        <div class="traits-container">
-            <div class="traits-section" title="For each positive trait there has to be a negative one! When your character dies, all traits are reset. Feel free to spin the wheel!">
-                <h2>Positive Traits</h2>
-                <div id="positiveTraits"></div>  <!-- Container for positive traits -->
-            </div>
-            <div class="traits-section">
-                <h2>Negative Traits</h2>
-                <div id="negativeTraits"></div>  <!-- Container for negative traits -->
-            </div>
-        </div>
-            
-            <div class="skills-section">
-                <div class="skills-header" title="At character creation you get 10 points to spend on each section (Social, Survival, Movement) each point translates into a +1 bonus on your rolls/skill checks. Skills can be leveled up with certain events or by getting taught by a master.">
-                    <h1>Skills</h1>
-                    <button class="toggle-button" onclick="toggleSection('skills-section')">Hide/Show</button>
-                </div>
-                <div class="skills-section" id="skills-section">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th title="How good are you with people?">Social Skills</th>
-                                <th title="Can you survive on your own for more than a day?">Survival Skills</th>
-                                <th title="DO A FLIP!">Movement Skills</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td title="Shows how good you can talk to others."><label>Speech  <input type="number" name="speech"></label></td>
-                                <td title="You can tell plants apart. You're now less likely to eat poison!"><label>Botany  <input type="number" name="botany"></label></td>
-                                <td title="Shows how good you can swim."><label>Swimming  <input type="number" name="swimming"></label></td>
-                            </tr>
-                            <tr>
-                                <td title="Shows how bad you can talk to others."><label>Intimidation  <input type="number" name="intimidation"></label></td>
-                                <td title="You can tell animals apart and befriend them!"><label>Zoology  <input type="number" name="zoology"></label></td>
-                                <td title="You can climb!"><label>Climbing  <input type="number" name="climbing"></label></td>
-                            </tr>
-                            <tr>
-                                <td title="Your ability to lead others and make them do what you want."><label>Leadership  <input type="number" name="leadership"></label></td>
-                                <td title="Shows how good you build and find traps."><label>Trapping  <input type="number" name="trapping"></label></td>
-                                <td title="Shows how good you can move without being heard or spotted (doesn't allow you to defy common sense)"><label>Sneaking  <input type="number" name="sneaking"></label></td>
-                            </tr>
-                            <tr>
-                                <td title="A must have for any bard! (disclaimer: bard is a profession, not a combat class!)"><label>Singing and Dancing  <input type="number" name="singing_dancing"></label></td>
-                                <td title="You can find a lot of things in the wild if you know where to look."><label>Foraging  <input type="number" name="foraging"></label></td>
-                                <td title="You are less likely to fall off your horse, your dragon, your griffon, your companions shoulders, etc."><label>Riding  <input type="number" name="riding"></label></td>
-                            </tr>
-                            <tr>
-                                <td title="Shows how good you can console others."><label>Empathy  <input type="number" name="empathy"></label></td>
-                                <td title="You can spot a lot of things if you're perceptive, including essences!"><label>Perception  <input type="number" name="perception"></label></td>
-                                <td title="You are less likely to get lost in strange places."><label>Orientation  <input type="number" name="orientation"></label></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="armor-section">
-                <div class="skills-header" title="This section is for very expensive people-wrappers that make you survive longer in combat!">
-                    <h1>Armor</h1>
-                    <button class="toggle-button" onclick="toggleSection('armor-section')">Hide/Show</button>
-                </div>
-                <div class="armor-section" id="armor-section">
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Armor Piece</th>
-                                <th>Name</th>
-                                <th>DEF</th>
-                                <th>MDEF</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Head</td>
-                                <td><input type="text" id="headName"></td>
-                                <td><input type="number" id="headDEF" class="armor-def" onchange="updateTotalDEFMDEF()"></td>
-                                <td><input type="number" id="headMDEF" class="armor-mdef" onchange="updateTotalDEFMDEF()"></td>
-                            </tr>
-                            <tr>
-                                <td>Body</td>
-                                <td><input type="text" id="bodyName"></td>
-                                <td><input type="number" id="bodyDEF" class="armor-def" onchange="updateTotalDEFMDEF()"></td>
-                                <td><input type="number" id="bodyMDEF" class="armor-mdef" onchange="updateTotalDEFMDEF()"></td>
-                            </tr>
-                            <tr>
-                                <td>Arms</td>
-                                <td><input type="text" id="armsName"></td>
-                                <td><input type="number" id="armsDEF" class="armor-def" onchange="updateTotalDEFMDEF()"></td>
-                                <td><input type="number" id="armsMDEF" class="armor-mdef" onchange="updateTotalDEFMDEF()"></td>
-                            </tr>
-                            <tr>
-                                <td>Legs</td>
-                                <td><input type="text" id="legsName"></td>
-                                <td><input type="number" id="legsDEF" class="armor-def" onchange="updateTotalDEFMDEF()"></td>
-                                <td><input type="number" id="legsMDEF" class="armor-mdef" onchange="updateTotalDEFMDEF()"></td>
-                            </tr>
-                            <tr>
-                                <td>Feet</td>
-                                <td><input type="text" id="feetName"></td>
-                                <td><input type="number" id="feetDEF" class="armor-def" onchange="updateTotalDEFMDEF()"></td>
-                                <td><input type="number" id="feetMDEF" class="armor-mdef" onchange="updateTotalDEFMDEF()"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <div class="accessories-section">
-                <div class="skills-header" title="Special items that can grant you additional abilities or just look really pretty.">
-                    <h1>Accessories</h1>
-                    <button class="toggle-button" onclick="toggleSection('accessories-section')">Hide/Show</button>
-                </div>
-                <div class="accessories-section" id="accessories-section">
-
-                    <div class="accessory" id="accessory1">
-                        <input type="text" placeholder="Accessory Name" id="accessoryName1" >
-                        <select id="accessoryAbility1">
-                            <option value="">Select Ability</option>
-                            <!-- Options for abilities -->
-                        </select>
-                        <button onclick="openAbilityInfo('accessoryAbility1')">Learn More</button>
-                    </div>
-                    <div class="accessory" id="accessory2">
-                        <input type="text" placeholder="Accessory Name" id="accessoryName2">
-                        <select id="accessoryAbility2">
-                            <option value="">Select Ability</option>
-                            <!-- Options for abilities -->
-                        </select>
-                        <button onclick="openAbilityInfo('accessoryAbility2')">Learn More</button>
-                    </div>
-                    <div class="accessory" id="accessory3">
-                        <input type="text" placeholder="Accessory Name" id="accessoryName3">
-                        <select id="accessoryAbility3">
-                            <option value="">Select Ability</option>
-                            <!-- Options for abilities -->
-                        </select>
-                        <button onclick="openAbilityInfo('accessoryAbility3')">Learn More</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="inventory-section">
-                <div class="skills-header" title="The stuff you carry with you. There is no official weight limit but keep it somewhat realistic, please.">
-                    <h1>Inventory</h1>
-                    <button class="toggle-button" onclick="toggleSection('inventory-section')">Hide/Show</button>
-                </div>
-                <div class="inventory-section" id="inventory-section">
-
-                    <table class="inventory-table">
-                        <thead>
-                            <tr>
-                                <th>Item</th>
-                                <th>Amount</th>
-                                <th>Item</th>
-                                <th>Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                                <td><input type="text" class="item-input" placeholder="Enter item name"></td>
-                                <td><input type="text" class="amount-input" placeholder="Specify amount"></td>
-                            </tr>
-                            
-                        </tbody>
-                    </table>
-                </div>
-            </div> 
             <button id="saveButton" onclick="saveFormData()">Save Character</button> 
     </main>
 

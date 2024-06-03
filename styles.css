@@ -139,7 +139,8 @@ button:hover {
 
 .attribute {
     flex: 1 1 10%; /* Each attribute can grow and shrink but bases at 20% of the container width */
-    display: flex;
+    display: flex;  
+    margin-top: 15px;
     flex-direction: column;
     align-items: flex-start;
     font-weight: bold;
@@ -159,7 +160,7 @@ button:hover {
 
 .attribute input[type="number"] h2 {
     width: 98%; /* Full width to match label */
-    padding: 1px;
+    padding: 30px;
     border-radius: 4px;
     font-weight: bold;
 }
@@ -447,14 +448,16 @@ table td {
 }
 
 input[type="number"] {
+    margin-top: 2px;
     text-align: right;
     padding: 4px;
-    border: 2px solid gray;
+    border: 1px solid gray;
     border-radius: 8px;
-    width: 35%; /* Adjust as needed */
+    width: 97%; /* Adjust as needed */
     background-color: #222;
     color: #FFA500;
     text-align: center;
+    font-size: 18px;
     font-weight: bold; /* Makes the text bold */
 }
 
@@ -762,53 +765,79 @@ tbody tr:nth-child(even) {
     transform: translateX(0); /* Slide in */
 }
 
-#hpCircleContainer {
+#HP, #Stamina{
     position: relative;
-    width: 120px;
-    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#hpCircleContainer, #staminaCircleContainer  {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    flex-shrink: 0;  /* Prevents the container from shrinking */
 }
 
 .circular-chart {
     display: block;
-    margin: 5px auto;
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
+}
+
+#hpText, #staminaText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -150%); /* Adjust to position above the input field */
+    color: #000;
+    font-size: 1em;
+    font-weight: bold;
+    white-space: nowrap;
+    margin-bottom: 10px;
+}
+
+.hp-circle-input, .stamina-circle-input {
+    position: absolute;
+    width: 80px !important; /* Using !important to override any other styles */
+    height: 15px; /* Adjust the height as needed */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    border: 1px solid #ccc; /* Optional: adds a border around the input */
+    background-color: rgba(255, 255, 255, 0.8); /* Slight transparency */
+    color: #333; /* Adjust text color as needed */
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 4px; /* Rounded borders */
+    z-index: 2; /* Ensures it's on top of the circle path */
+}
+
+#hpText .hp-percentage, #staminaText .stamina-percentage {
+    display: block;  /* Makes the span take the full width available */
+    text-align: center;  /* Centers the text within the span */
 }
 
 .circle-bg {
     fill: none;
-    stroke: #555; /* light grey background for the circle */
-    stroke-width: 3.8;
+    stroke: #333; /* Light grey for background */
+    stroke-width: 2.8;
 }
 
 .circle {
     fill: none;
     stroke-width: 2.8;
     stroke-linecap: round;
-    transition: stroke-dashoffset 0.6s ease-in-out, stroke 0.6s ease; /* Smooths transition of health decrease and color change */
+    transition: stroke-dashoffset 0.35s, stroke 0.35s; /* Animation transitions */
 }
-
-#hpText {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 14px;
-    font-weight: bold;
-}
-
 
 @keyframes turn {
     from { stroke-dashoffset: 100; }
     to { stroke-dashoffset: 0; }
 }
+ 
 
-.circle {
-    fill: none;
-    stroke-width: 2.8;
-    stroke-linecap: round;
-    transition: stroke-dashoffset 0.6s ease-in-out;  
-} 
 .ailments-section {
     padding: 15px;
     background-color: #222;

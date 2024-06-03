@@ -54,9 +54,9 @@ function setupEventListeners() {
         raceInfoBtn.addEventListener('click', openRaceInfo);
     }
 
-    const newRoundButton = document.querySelector('button that triggers new round');
-    if (newRoundButton) {
-        newRoundButton.addEventListener('click', newRound);
+    const newRound = document.querySelector('button that triggers new round');
+    if (newRound) {
+        newRound.addEventListener('click', newRound);
     } /*else {
         console.error('New Round button not found!');
     }*/
@@ -90,6 +90,30 @@ function setupEventListeners() {
         openTab(new Event('click'), type); // Manually trigger tab open
         document.querySelector(`[onclick="openTab(event, '${type}')"]`).classList.add('active');
     }
+
+    // Listener for stamina input changes
+    const staminaInput = document.getElementById('stamina');
+    staminaInput.addEventListener('input', () => {
+        const currentStamina = parseInt(staminaInput.value, 10);
+        const maxStamina = parseInt(staminaInput.max, 10);
+        updateStaminaBar(currentStamina, maxStamina);
+    });
+
+    // Listener for new round button
+    const newRoundButton = document.getElementById('newRoundButton'); // Assuming the button has this ID
+    newRoundButton.addEventListener('click', () => {
+        const currentStamina = parseInt(staminaInput.value, 10);
+        const maxStamina = parseInt(staminaInput.max, 10);
+        updateStaminaBar(currentStamina, maxStamina);
+        // Include any additional logic needed for a new round
+    });
+
+    // Make sure to update stamina on page load or when data is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+        const currentStamina = parseInt(staminaInput.value, 10) || 10; // Default to 10 if nothing is set
+        const maxStamina = staminaInput.max || 15; // Adjust according to your "Marathoner" trait logic
+        updateStaminaBar(currentStamina, maxStamina);
+    });
 
 }
 
@@ -134,34 +158,35 @@ function initializeHPBar() {
 }
 
 function getColorForPercentage(pct) {
-    if (pct >= 1) { // Over 100%
+    if (pct > 0.9) {
         return '#00AAFF'; // Blue color for overshield
-    } else if (pct >= 0.9) {
-        return '#00D4FF'; 
-    } else if (pct >= 0.8) {
-        return '00FFD4';
-    } else if (pct >= 0.7) {
+    } else if (pct > 0.8) {
+        return '#00D4FF';
+    } else if (pct > 0.7) {
+        return '#00FFD4';
+    } else if (pct > 0.6) {
         return '#00FF80'; 
-    } else if (pct >= 0.6) {
+    } else if (pct > 0.5) {
         return '#00FF2B'; 
-    } else if (pct >= 0.5) {
+    } else if (pct > 0.4) {
         return '#2AFF00'; 
-    } else if (pct >= 0.4) {
+    } else if (pct > 0.3) {
         return '#AAFF00'; 
-    } else if (pct >= 0.3) {
+    } else if (pct > 0.2) {
         return '#FFFF00'; 
-    } else if (pct >= 0.2) {
+    } else if (pct > 0.1) {
         return '#FFAA00'; 
-    } else if (pct >= 0.1) {
-        return '#FF5500'; 
+    } else if (pct > 0) {
+        return '#FF5500';
     } else {
-        return '#FF0000'; // Red
+        return '#FF0000'; // Red for 0% or below
     }
 }
 
 function updateHPBar(currentHP, maxHP) {
     const hpText = document.getElementById('hpText');
     const percentage = Math.min(currentHP / maxHP, 1); // Ensures the percentage doesn't exceed 100%
+    const displayPercentage = (percentage * 100).toFixed(0); // Format percentage for display
     const circumference = 100; // The circumference of the circle
     const offset = circumference * (1 - percentage); // Calculate the offset based on current health
 
@@ -170,8 +195,25 @@ function updateHPBar(currentHP, maxHP) {
     circle.style.strokeDashoffset = offset;
     circle.style.stroke = getColorForPercentage(percentage); // Update the color based on health
 
-    hpText.textContent = `HP: ${currentHP} / ${maxHP}`;
+    // Update text to include both absolute HP and percentage
+    hpText.innerHTML = `<span class="hp-percentage">(${displayPercentage}%)</span>HP: ${currentHP} / ${maxHP}`;
 }
+
+function updateStaminaBar(currentStamina, maxStamina) {
+    const staminaText = document.getElementById('staminaText');
+    const percentage = Math.min(currentStamina / maxStamina, 1);
+    const circumference = 100;
+    const offset = circumference * (1 - percentage);
+
+    const circle = document.querySelector('#staminaCircleContainer .circle');
+    circle.style.strokeDasharray = `${circumference}, ${circumference}`;
+    circle.style.strokeDashoffset = offset;
+    circle.style.stroke = getColorForPercentage(percentage); // Ensure this function handles stamina colors if different
+
+    staminaText.textContent = `Stamina: ${currentStamina} / ${maxStamina}`;
+}
+
+// Attach this function to relevant event listeners like changes in stamina or "New Round" button clicks.
 
 function openRaceInfo() {
     var race = document.getElementById('race').value;
@@ -751,7 +793,7 @@ function newRound() {
 
     // Update Stamina
     const stamPerRound = parseInt(document.getElementById('sta').value) || 0;
-    const currentStam = document.getElementById('stam');
+    const currentStam = document.getElementById('stamina');
     let currentStamValue = parseInt(currentStam.value) || 0;
     currentStamValue += stamPerRound;
     currentStamValue = Math.min(10, currentStamValue);
